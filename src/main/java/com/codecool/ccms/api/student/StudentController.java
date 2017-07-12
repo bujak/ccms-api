@@ -1,5 +1,6 @@
 package com.codecool.ccms.api.student;
 
+import jersey.repackaged.com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,27 @@ public class StudentController {
         studentService.destroy(id);
         return studentService.getAll().size();
     }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public Student update(@PathVariable String id, @RequestBody Student student) {
+        Student student1 = studentService.getById(id);
+        if (student1 == null) {
+            student.setFirstName("chuj");
+            return student;
+        }
+        if (student.getFirstName() != null) {
+            student1.setFirstName(student.getFirstName());
+        }
+        if (student.getLastName() != null) {
+            student1.setLastName(student.getLastName());
+        }
+        if (student.getKlass() != null) {
+            student1.setKlass(student.getKlass());
+        }
+        studentService.add(student1);
+        return student1;
+    }
+
 
 
 }
