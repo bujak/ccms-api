@@ -20,22 +20,22 @@ public class StudentController {
         studentService.add(new Student("jonh", "doe", "krk"));
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity index() {
         return studentService.getAll();
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "", produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity add(@RequestBody Student student) {
         return studentService.add(student);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity show(@PathVariable String id) {
         return studentService.getById(id);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.DELETE)
     public ResponseEntity destroy(@PathVariable String id) {
 
         return studentService.destroy(id);
