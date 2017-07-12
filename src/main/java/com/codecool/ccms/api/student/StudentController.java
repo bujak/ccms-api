@@ -1,4 +1,4 @@
-package com.codecool.ccms.api.controller;
+package com.codecool.ccms.api.student;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
