@@ -20,4 +20,8 @@ public class StudentService {
         studentRepository.findAll().forEach(students::add);
         return students;
     }
+
+    public void add(Student student) {
+        studentRepository.save(student);
+    }
 }
