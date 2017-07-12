@@ -1,6 +1,7 @@
 package com.codecool.ccms.api.student;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 public class Student {
 
     @Id
+    @GeneratedValue
     private int id;
     private String firstName;
     private String lastName;
