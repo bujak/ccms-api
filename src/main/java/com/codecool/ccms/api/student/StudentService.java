@@ -17,34 +17,50 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
-    public List<Student> getAll() {
+    private final String error404JSON = "{\n" +
+            "  \"key\": \"NotFoundError\",\n" +
+            "  \"msg\": \"Resource not found\"\n" +
+            "}";
+
+    private String getError404JSON() {
+        return this.error404JSON;
+    }
+
+    public ResponseEntity getAll() {
         List<Student> students = new ArrayList<>();
         studentRepository.findAll().forEach(students::add);
-        return students;
+        return new ResponseEntity(students, HttpStatus.OK);
     }
 
-    public void add(Student student) {
+    public ResponseEntity add(Student student) {
         studentRepository.save(student);
+        return new ResponseEntity(student, HttpStatus.OK);
     }
 
-    public Student getById(String id) {
-       return studentRepository.findOne(id);
+    public ResponseEntity getById(String id) {
+        Student student = studentRepository.findOne(id);
+        if (student == null) {
+            return new ResponseEntity(getError404JSON(), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(student, HttpStatus.OK);
     }
 
     public ResponseEntity destroy(String id) {
-        Student student = getById(id);
-        if (student == null)
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        HttpStatus httpStatus = getById(id).getStatusCode();
+        if (httpStatus == HttpStatus.NOT_FOUND) {
+            return new ResponseEntity(getError404JSON(), HttpStatus.NOT_FOUND);
+        }
         studentRepository.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     public ResponseEntity update(String id, Student student) {
 
-        Student studentToUpdate = getById(id);
-        if (studentToUpdate == null) {
-            return null;
+        HttpStatus httpStatus = getById(id).getStatusCode();
+        if (httpStatus == HttpStatus.NOT_FOUND) {
+            return new ResponseEntity(getError404JSON(),HttpStatus.NOT_FOUND);
         }
+        Student studentToUpdate = studentRepository.findOne(id);
         if (student.getFirstName() != null) {
             studentToUpdate.setFirstName(student.getFirstName());
         }
@@ -55,6 +71,6 @@ public class StudentService {
             studentToUpdate.setKlass(student.getKlass());
         }
         studentRepository.save(studentToUpdate);
-        return new ResponseEntity(getById(id), HttpStatus.OK);
+        return new ResponseEntity(studentToUpdate, HttpStatus.OK);
     }
 }

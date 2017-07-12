@@ -21,18 +21,17 @@ public class StudentController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<Student> index() {
+    public ResponseEntity index() {
         return studentService.getAll();
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public Student add(@RequestBody Student student) {
-        studentService.add(student);
-        return student;
+    public ResponseEntity add(@RequestBody Student student) {
+        return studentService.add(student);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Student show(@PathVariable String id) {
+    public ResponseEntity show(@PathVariable String id) {
         return studentService.getById(id);
     }
 
@@ -44,14 +43,6 @@ public class StudentController {
 
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable String id, @RequestBody Student student) {
-        if (studentService.getById(id) == null) {
-            String err404 = "{\n" +
-                    "  \"key\": \"NotFoundError\",\n" +
-                    "  \"msg\": \"Resource not found\"\n" +
-                    "}";
-            ResponseEntity responseEntity= new ResponseEntity(err404,HttpStatus.NOT_FOUND);
-            return responseEntity;
-        }
         return studentService.update(id, student);
     }
 
