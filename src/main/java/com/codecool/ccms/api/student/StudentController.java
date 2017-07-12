@@ -1,7 +1,8 @@
 package com.codecool.ccms.api.student;
 
-import jersey.repackaged.com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,29 +37,22 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public Integer destroy(@PathVariable String id) {
-        studentService.destroy(id);
-        return studentService.getAll().size();
+    public ResponseEntity destroy(@PathVariable String id) {
+
+        return studentService.destroy(id);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public Student update(@PathVariable String id, @RequestBody Student student) {
-        Student student1 = studentService.getById(id);
-        if (student1 == null) {
-            student.setFirstName("chuj");
-            return student;
+    @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.PUT)
+    public ResponseEntity update(@PathVariable String id, @RequestBody Student student) {
+        if (studentService.getById(id) == null) {
+            String err404 = "{\n" +
+                    "  \"key\": \"NotFoundError\",\n" +
+                    "  \"msg\": \"Resource not found\"\n" +
+                    "}";
+            ResponseEntity responseEntity= new ResponseEntity(err404,HttpStatus.NOT_FOUND);
+            return responseEntity;
         }
-        if (student.getFirstName() != null) {
-            student1.setFirstName(student.getFirstName());
-        }
-        if (student.getLastName() != null) {
-            student1.setLastName(student.getLastName());
-        }
-        if (student.getKlass() != null) {
-            student1.setKlass(student.getKlass());
-        }
-        studentService.add(student1);
-        return student1;
+        return studentService.update(id, student);
     }
 
 
