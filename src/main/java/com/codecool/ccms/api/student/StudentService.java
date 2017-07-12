@@ -28,4 +28,8 @@ public class StudentService {
     public Student getById(String id) {
        return studentRepository.findOne(id);
     }
+
+    public void destroy(String id) {
+        studentRepository.delete(id);
+    }
 }
