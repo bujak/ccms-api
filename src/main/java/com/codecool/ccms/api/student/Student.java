@@ -13,7 +13,7 @@ public class Student {
 
     @Id
     @GeneratedValue
-    private int id;
+    private String id;
     private String firstName;
     private String lastName;
     private String klass;
@@ -27,11 +27,11 @@ public class Student {
     public Student() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String  id) {
         this.id = id;
     }
 
