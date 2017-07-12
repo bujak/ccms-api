@@ -1,6 +1,7 @@
 package com.codecool.ccms.api.student;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * Created by bujak on 12.07.17.
@@ -8,6 +9,8 @@ import javax.persistence.Entity;
 
 @Entity
 public class Student {
+
+    @Id
     private int id;
     private String firstName;
     private String lastName;
