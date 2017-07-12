@@ -12,6 +12,12 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    @RequestMapping(value = "/init")
+    public void init() {
+        studentService.add(new Student("jan", "kowalski", "krk"));
+        studentService.add(new Student("jonh", "doe", "krk"));
+    }
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<Student> index() {
         return studentService.getAll();
@@ -27,5 +33,12 @@ public class StudentController {
     public Student show(@PathVariable String id) {
         return studentService.getById(id);
     }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public Integer destroy(@PathVariable String id) {
+        studentService.destroy(id);
+        return studentService.getAll().size();
+    }
+
 
 }
