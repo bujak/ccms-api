@@ -22,6 +22,9 @@ public class Student {
         this.klass = klass;
     }
 
+    public Student() {
+    }
+
     public int getId() {
         return id;
     }
