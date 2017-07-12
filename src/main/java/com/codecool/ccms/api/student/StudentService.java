@@ -33,8 +33,24 @@ public class StudentService {
     }
 
     public ResponseEntity add(Student student) {
+        StringBuilder params = new StringBuilder();
+
+        //TODO GENERATE UNFILLED PARAMS
+        if (student.getFirstName() == null) {
+            params.append("\"firstName\" : \"required\"");
+        }
+        if (student.getLastName() == null) {
+            params.append("\"lastName\" : \"required\"");
+        }
+        if (student.getKlass() == null) {
+            params.append("\"klass\" : \"required\"");
+        }
+        if (params.length() != 0) {
+            return new ResponseEntity(params, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
         studentRepository.save(student);
-        return new ResponseEntity(student, HttpStatus.OK);
+        return new ResponseEntity(student, HttpStatus.CREATED);
     }
 
     public ResponseEntity getById(String id) {
@@ -51,14 +67,13 @@ public class StudentService {
             return new ResponseEntity(getError404JSON(), HttpStatus.NOT_FOUND);
         }
         studentRepository.delete(id);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     public ResponseEntity update(String id, Student student) {
-
         HttpStatus httpStatus = getById(id).getStatusCode();
         if (httpStatus == HttpStatus.NOT_FOUND) {
-            return new ResponseEntity(getError404JSON(),HttpStatus.NOT_FOUND);
+            return new ResponseEntity(getError404JSON(), HttpStatus.NOT_FOUND);
         }
         Student studentToUpdate = studentRepository.findOne(id);
         if (student.getFirstName() != null) {
