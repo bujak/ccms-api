@@ -3,6 +3,9 @@ package com.codecool.ccms.api.student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by bujak on 12.07.17.
  */
@@ -10,5 +13,11 @@ import org.springframework.stereotype.Service;
 public class StudentService {
 
     @Autowired
-    StudentRepository studentRepository;
+    private StudentRepository studentRepository;
+
+    public List<Student> getAll() {
+        List<Student> students = new ArrayList<>();
+        studentRepository.findAll().forEach(students::add);
+        return students;
+    }
 }
