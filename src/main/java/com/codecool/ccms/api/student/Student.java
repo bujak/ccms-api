@@ -1,8 +1,12 @@
 package com.codecool.ccms.api.student;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by bujak on 12.07.17.
@@ -14,8 +18,17 @@ public class Student {
     @Id
     @GeneratedValue
     private String id;
+
+    @Column
+    @NotEmpty(message = "firstName.error")
     private String firstName;
+
+    @Column
+    @NotEmpty(message = "lastName.error")
     private String lastName;
+
+    @Column
+    @NotEmpty(message = "klass.error")
     private String klass;
 
     public Student(String firstName, String lastName, String klass) {
