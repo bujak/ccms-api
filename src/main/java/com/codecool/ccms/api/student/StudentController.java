@@ -1,11 +1,10 @@
 package com.codecool.ccms.api.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/students")
@@ -25,19 +24,18 @@ public class StudentController {
         return studentService.getAll();
     }
 
-    @RequestMapping(value = "", produces = "application/json", method = RequestMethod.POST)
-    public ResponseEntity add(@RequestBody Student student) {
-        return studentService.add(student);
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public void create(@Validated @RequestBody Student student) {
+        studentService.add(student);
     }
 
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity show(@PathVariable String id) {
-        return studentService.getById(id);
+        return studentService.findOne(id);
     }
 
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.DELETE)
     public ResponseEntity destroy(@PathVariable String id) {
-
         return studentService.destroy(id);
     }
 
