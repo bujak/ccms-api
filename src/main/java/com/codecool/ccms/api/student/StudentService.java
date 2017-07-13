@@ -28,7 +28,7 @@ public class StudentService {
         studentRepository.save(student);
     }
 
-    private Student getById(String id) {
+    private Student getById(Integer id) {
         Student student = studentRepository.findOne(id);
         if (student == null) {
             throw new NotFoundException();
@@ -36,17 +36,17 @@ public class StudentService {
         return student;
     }
 
-    public ResponseEntity findOne(String id) {
+    public ResponseEntity findOne(Integer id) {
         return new ResponseEntity(getById(id), HttpStatus.OK);
     }
 
-    public ResponseEntity destroy(String id) {
+    public ResponseEntity destroy(Integer id) {
         getById(id);
         studentRepository.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    public ResponseEntity update(String id, Student student) {
+    public ResponseEntity update(Integer id, Student student) {
 
         Student studentToUpdate = getById(id);
         if (student.getFirstName() != null) {

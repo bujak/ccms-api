@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface StudentRepository extends CrudRepository<Student, String> {
+public interface StudentRepository extends CrudRepository<Student, Integer> {
 }

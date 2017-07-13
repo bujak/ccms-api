@@ -30,17 +30,17 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.GET)
-    public ResponseEntity show(@PathVariable String id) {
+    public ResponseEntity show(@PathVariable Integer id) {
         return studentService.findOne(id);
     }
 
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.DELETE)
-    public ResponseEntity destroy(@PathVariable String id) {
+    public ResponseEntity destroy(@PathVariable Integer id) {
         return studentService.destroy(id);
     }
 
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.PUT)
-    public ResponseEntity update(@PathVariable String id, @RequestBody Student student) {
+    public ResponseEntity update(@PathVariable Integer id, @RequestBody Student student) {
         return studentService.update(id, student);
     }
 

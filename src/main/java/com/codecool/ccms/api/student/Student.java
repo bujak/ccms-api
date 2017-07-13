@@ -17,7 +17,7 @@ public class Student {
 
     @Id
     @GeneratedValue
-    private String id;
+    private Integer id;
 
     @Column
     @NotEmpty(message = "firstName.error")
@@ -40,11 +40,11 @@ public class Student {
     public Student() {
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String  id) {
+    public void setId(Integer  id) {
         this.id = id;
     }
 
