@@ -1,6 +1,7 @@
 package com.codecool.ccms.api.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,9 @@ public class StudentController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public void create(@Validated @RequestBody Student student) {
+    public ResponseEntity create(@Validated @RequestBody Student student) {
         studentService.add(student);
+        return new ResponseEntity<>(student, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.GET)
@@ -43,7 +45,4 @@ public class StudentController {
     public ResponseEntity update(@PathVariable Integer id, @RequestBody Student student) {
         return studentService.update(id, student);
     }
-
-
-
 }
