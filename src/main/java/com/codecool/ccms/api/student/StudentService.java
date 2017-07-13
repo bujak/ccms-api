@@ -1,5 +1,6 @@
 package com.codecool.ccms.api.student;
 
+import com.codecool.ccms.api.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,65 +18,37 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
-    private final String error404JSON = "{\n" +
-            "  \"key\": \"NotFoundError\",\n" +
-            "  \"msg\": \"Resource not found\"\n" +
-            "}";
-
-    private String getError404JSON() {
-        return this.error404JSON;
-    }
-
     public ResponseEntity getAll() {
         List<Student> students = new ArrayList<>();
         studentRepository.findAll().forEach(students::add);
         return new ResponseEntity(students, HttpStatus.OK);
     }
 
-    public ResponseEntity add(Student student) {
-        StringBuilder params = new StringBuilder();
-
-        //TODO GENERATE UNFILLED PARAMS
-        if (student.getFirstName() == null) {
-            params.append("\"firstName\" : \"required\"");
-        }
-        if (student.getLastName() == null) {
-            params.append("\"lastName\" : \"required\"");
-        }
-        if (student.getKlass() == null) {
-            params.append("\"klass\" : \"required\"");
-        }
-        if (params.length() != 0) {
-            return new ResponseEntity(params, HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
+    public void add(Student student) {
         studentRepository.save(student);
-        return new ResponseEntity(student, HttpStatus.CREATED);
     }
 
-    public ResponseEntity getById(String id) {
+    private Student getById(String id) {
         Student student = studentRepository.findOne(id);
         if (student == null) {
-            return new ResponseEntity(getError404JSON(), HttpStatus.NOT_FOUND);
+            throw new NotFoundException();
         }
-        return new ResponseEntity(student, HttpStatus.OK);
+        return student;
+    }
+
+    public ResponseEntity findOne(String id) {
+        return new ResponseEntity(getById(id), HttpStatus.OK);
     }
 
     public ResponseEntity destroy(String id) {
-        HttpStatus httpStatus = getById(id).getStatusCode();
-        if (httpStatus == HttpStatus.NOT_FOUND) {
-            return new ResponseEntity(getError404JSON(), HttpStatus.NOT_FOUND);
-        }
+        getById(id);
         studentRepository.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     public ResponseEntity update(String id, Student student) {
-        HttpStatus httpStatus = getById(id).getStatusCode();
-        if (httpStatus == HttpStatus.NOT_FOUND) {
-            return new ResponseEntity(getError404JSON(), HttpStatus.NOT_FOUND);
-        }
-        Student studentToUpdate = studentRepository.findOne(id);
+
+        Student studentToUpdate = getById(id);
         if (student.getFirstName() != null) {
             studentToUpdate.setFirstName(student.getFirstName());
         }
